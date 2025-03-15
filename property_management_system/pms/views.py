@@ -8,9 +8,9 @@ from django.contrib.auth import authenticate
 from rest_framework import status
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
-from .models import Profile
-from .models import Property, Booking
+from .models import Profile, Property, Booking
 from .serializers import PropertySerializer, BookingSerializer
+from rest_framework.decorators import api_view, permission_classes
 
 class TenantViewSet(viewsets.ModelViewSet):
     queryset = Tenant.objects.all()
@@ -69,10 +69,33 @@ class PropertyViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)  # Set the owner to the current user
 
-class BookingViewSet(viewsets.ModelViewSet):
-    queryset = Booking.objects.all()
-    serializer_class = BookingSerializer
-    permission_classes = [IsAuthenticated]
+# ✅ Fixed BookingView: Automatically assigns the logged-in user as the tenant
+class BookingView(APIView):
+    permission_classes = [IsAuthenticated]  # Ensures only logged-in users can access bookings
 
-    def perform_create(self, serializer):
-        serializer.save(tenant=self.request.user)  # Set the tenant to the current user
+    def get(self, request):
+        bookings = Booking.objects.filter(tenant=request.user)
+        serializer = BookingSerializer(bookings, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = BookingSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(tenant=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def confirm_booking(request):
+    booking_id = request.data.get("booking_id")
+    
+    try:
+        booking = Booking.objects.get(id=booking_id, tenant=request.user)
+        booking.payment_status = "paid"
+        booking.status = "confirmed"
+        booking.save()
+        return Response({"message": "Booking confirmed as paid!"}, status=status.HTTP_200_OK)
+    except Booking.DoesNotExist:
+        return Response({"error": "Booking not found"}, status=status.HTTP_404_NOT_FOUND)
