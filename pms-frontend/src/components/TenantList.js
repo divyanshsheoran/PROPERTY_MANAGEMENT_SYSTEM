@@ -18,7 +18,7 @@ const TenantList = () => {
         }
     }, [navigate]);
 
-    // ✅ Fetch all properties from the API
+    //Fetch all properties from the API
     const fetchProperties = async () => {
         try {
             const response = await axios.get("http://127.0.0.1:8000/api/properties/", {
@@ -30,7 +30,7 @@ const TenantList = () => {
         }
     };
 
-    // ✅ Fetch booked properties for the logged-in user
+    // Fetch booked properties for the logged-in user
     const fetchBookings = useCallback(async () => {
         try {
             const token = localStorage.getItem("token");
@@ -44,7 +44,7 @@ const TenantList = () => {
                 headers: { Authorization: `Token ${token}` },
             });
     
-            console.log("Bookings API Response:", response.data); // 🔍 Debugging Line
+            console.log("Bookings API Response:", response.data); 
     
             const propertyResponse = await axios.get("http://127.0.0.1:8000/api/properties/", {
                 headers: { Authorization: `Token ${token}` },
@@ -61,7 +61,7 @@ const TenantList = () => {
                 property: propertyMap[booking.property] || { name: "Unknown", image: "/images/default-property.webp" },
             }));
     
-            console.log("Mapped Bookings:", enrichedBookings); // 🔍 Debugging Line
+            console.log("Mapped Bookings:", enrichedBookings); 
     
             setBookedProperties(enrichedBookings);
         } catch (error) {
@@ -73,7 +73,7 @@ const TenantList = () => {
 
     useEffect(() => {
         fetchBookings();
-    }, [fetchBookings]); // ✅ Fixes missing dependency warning
+    }, [fetchBookings]); 
 
     const handleBookNow = (propertyId) => {
         navigate(`/confirm-booking/${propertyId}`);
@@ -84,7 +84,6 @@ const TenantList = () => {
             <h1 className="text-center mb-4">Welcome, Tenant!</h1>
             <p className="text-center">Here’s what you can do:</p>
 
-            {/* 🔍 Search Properties */}
             <div className="mb-4">
                 <h2>Search Properties</h2>
                 <input
@@ -133,7 +132,7 @@ const TenantList = () => {
                 </div>
             </div>
 
-            {/* 📌 Manage Reservations (Booked Properties) */}
+            {/* Manage Reservations (Booked Properties) */}
             <div className="mt-5">
                 <h2>Manage Reservations</h2>
                 {bookedProperties.length === 0 ? (

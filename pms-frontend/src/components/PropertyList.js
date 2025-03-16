@@ -31,7 +31,7 @@ const PropertyList = () => {
         try {
             await axios.post(
                 'http://127.0.0.1:8000/api/bookings/',
-                { property: propertyId, start_date: '2023-10-01', end_date: '2023-10-10' }, // Example dates
+                { property: propertyId, start_date: '2023-10-01', end_date: '2023-10-10' }, 
                 { headers: { Authorization: `Token ${localStorage.getItem('token')}` } }
             );
             alert('Booking successful!');

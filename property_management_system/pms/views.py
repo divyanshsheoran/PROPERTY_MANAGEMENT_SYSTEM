@@ -69,7 +69,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)  # Set the owner to the current user
 
-# ✅ Fixed BookingView: Automatically assigns the logged-in user as the tenant
+#BookingView: Automatically assigns the logged-in user as the tenant
 class BookingView(APIView):
     permission_classes = [IsAuthenticated]  # Ensures only logged-in users can access bookings
 

@@ -11,20 +11,20 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            // Step 1: Log in the user
+            // Log in the user
             const loginResponse = await axios.post('http://127.0.0.1:8000/api/login/', {
                 username,
                 password,
             });
             localStorage.setItem('token', loginResponse.data.token); // Save token
 
-            // Step 2: Fetch the user's profile to get their role
+            // Fetch the user's profile to get their role
             const profileResponse = await axios.get('http://127.0.0.1:8000/api/profile/', {
                 headers: { Authorization: `Token ${loginResponse.data.token}` },
             });
             localStorage.setItem('role', profileResponse.data.role); // Save role
 
-            // Step 3: Redirect to the home page or dashboard
+            // Redirect to the home page or dashboard
             navigate('/home'); // Redirect to a common home page
         } catch (err) {
             setError('Invalid username or password');

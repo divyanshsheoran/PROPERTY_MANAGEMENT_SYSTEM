@@ -16,22 +16,19 @@ const Navbar = () => {
             <div className="container">
                 <Link className="navbar-brand" to="/">Property Management System</Link>
                 <div className="navbar-nav">
-                    {/* Show Tenant options */}
+
                     {role === 'tenant' && (
                         <Link className="nav-link" to="/tenants">Tenant Home</Link>
                     )}
 
-                    {/* Show Owner options */}
                     {role === 'owner' && (
                         <Link className="nav-link" to="/owners">Owner Home</Link>
                     )}
 
-                    {/* Show Admin options */}
                     {role === 'admin' && (
                         <Link className="nav-link" to="/admins">Admin Home</Link>
                     )}
 
-                    {/* Logout button */}
                     <button onClick={handleLogout} className="btn btn-danger">Logout</button>
                 </div>
             </div>

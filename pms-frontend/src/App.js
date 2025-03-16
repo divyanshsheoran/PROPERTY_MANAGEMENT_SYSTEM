@@ -10,7 +10,7 @@ import PropertyList from './components/PropertyList';
 import AddProperty from './components/AddProperty';
 import Home from './components/Home';
 import MainHome from './components/MainHome';
-import ConfirmBooking from './components/ConfirmBooking';  // ✅ The only needed booking page
+import ConfirmBooking from './components/ConfirmBooking';  
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
               <Route path="/admins" element={<AdminList />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/confirm-booking/:propertyId" element={<ConfirmBooking />} />  {/* ✅ The only booking route */}
+              <Route path="/confirm-booking/:propertyId" element={<ConfirmBooking />} />  
           </Routes>
       </Router>
   );

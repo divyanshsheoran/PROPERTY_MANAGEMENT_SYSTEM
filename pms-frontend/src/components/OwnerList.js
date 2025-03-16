@@ -22,7 +22,7 @@ const OwnerList = () => {
                 headers: { Authorization: `Token ${localStorage.getItem('token')}` },
             });
 
-            // ✅ Show only properties owned by the logged-in owner
+            // Show only properties owned by the logged-in owner
             const userId = localStorage.getItem('user_id');  // Get logged-in owner's ID
             const ownerProperties = response.data.filter(prop => prop.owner === parseInt(userId));
             setProperties(ownerProperties);
