@@ -3,10 +3,12 @@ from django.contrib.auth.models import User
 from .models import Profile, Tenant, Owner, Admin, Property, Booking
 from django.utils import timezone
 from datetime import date, timedelta
+import os
 
 class ProfileModelTest(TestCase):
     def test_profile_creation(self):
-        user = User.objects.create_user(username='testuser', password='testpass')
+        test_password = os.environ.get('TEST_USER_PASSWORD', 'defaultTestPass123')
+        user = User.objects.create_user(username='testuser', password=test_password)
         profile = Profile.objects.create(user=user, role='tenant')
         self.assertEqual(profile.role, 'tenant')
         self.assertEqual(str(profile), 'testuser (tenant)')
